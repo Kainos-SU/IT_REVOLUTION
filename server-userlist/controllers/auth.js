@@ -53,6 +53,8 @@ module.exports.register = async function (req, res) {
     const user = new User({
       email: req.body.email,
       password: bcrypt.hashSync(password, salt),
+      name: req.body.name,
+      admin: false,
     });
     try {
       await user.save();
