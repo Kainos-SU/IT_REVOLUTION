@@ -1,0 +1,192 @@
+paths:
+  /api/auth/login:
+    post:
+      summary: Login in account
+      tags: [User]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+            $ref: "#/components/schemas/userLogin"
+      responses:
+        200:
+          description: Користувача створено.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Token"
+        401:
+          description: Введено не вірно пароль або пошта.
+        404:
+          description: Користувача з такою поштою не знайдено.
+        500:
+          description: Сталася помилка на серверові. Спробуйте пізніше.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /api/auth/register:
+    post:
+      summary: Register new user
+      tags: [User]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+            $ref: "#/components/schemas/userRegister"
+      responses:
+        201:
+          description: Користувача створено.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/userRegister"
+        409:
+          description: Цей емейл уже занятий, виберіть другий.
+        500:
+          description: Сталася помилка на серверові. Спробуйте пізніше.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /api/auth/userlist/:
+    get:
+      summary: Get all userList
+      tags: [UserList]
+      responses:
+        200:
+          description: Список користувачів сайту.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/userList"
+        401:
+          description: Для цієї дії вам потрібно бути авторизованим.
+        500:
+          description: Сталася помилка на серверові. Спробуйте пізніше.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /api/auth/userlist/{idUser}:
+    get:
+      summary: Get one user
+      tags: [UserList]
+      parameters:
+        - id: idUser
+          in: path
+          required: true
+          description: ID користувача для показу конкретного користувача.
+          schema:
+            type: string
+      responses:
+        200:
+          description: У відповідь буде надіслано користувача по його id.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/userListItem"
+        401:
+          description: Для цієї дії вам потрібно бути авторизованим.
+        500:
+          description: Сталася помилка на серверові. Спробуйте пізніше.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /api/auth/userlist/{idUserDelete}:
+    delete:
+      summary: Delete user from DB
+      tags: [UserList]
+      parameters:
+        - id: idUserDelete
+          in: path
+          required: true
+          description: ID для видалення користувача з БД.
+          schema:
+            type: string
+          example: 62486da443599f421e33c616
+      responses:
+        200:
+          description: Успішно
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/userListItem"
+        401:
+          description: Для цієї дії вам потрібно бути авторизованим.
+        500:
+          description: Сталася помилка на серверові. Спробуйте пізніше.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    userLogin:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          example: email1@gmail.com
+        password:
+          type: string
+          example: $2a$10$jEt5teYz/9YtiBbCgSOPYeQoFd7erxVQvl1.thn/4OG7mb3bgJ1Bi
+    userRegister:
+      type: object
+      required:
+        - name
+        - email
+        - password
+        - _id
+      properties:
+        name:
+          type: string
+          example: accountName
+        email:
+          type: string
+          example: email1@gmail.com
+        password:
+          type: string
+          example: $2a$10$jEt5teYz/9YtiBbCgSOPYeQoFd7erxVQvl1.thn/4OG7mb3bgJ1Bi
+        _id:
+          type: string
+          example: 62486da443599f421e33c616
+    userListItem:
+      type: object
+      required:
+        - name
+        - email
+      properties:
+        name:
+          type: string
+          example: accountName
+        email:
+          type: string
+          example: email1@gmail.com
+    userList:
+      type: array
+      items:
+        $ref: "#/components/schemas/userListItem"
+    Token:
+      type: object
+      required: true
+        - token
+      properties:
+        token:
+          type: string
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+    Error:
+      type: object
+      required: true
+        - message
+      properties:
+        message:
+          type: string
+          example: Текст помилки
