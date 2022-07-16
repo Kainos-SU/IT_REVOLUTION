@@ -1,0 +1,49 @@
+<template lang="pug">
+div 
+  v-card.mx-auto(max-width='1000' tile='')
+    v-img(height='200' src='https://steamuserimages-a.akamaihd.net/ugc/938320481065434302/A064FE099954A915A0A3DB3BD8046FC0AFFD6D9C/')
+    v-row(style='margin:2.5%;position:absolute; top: 130px')
+      v-list-item
+        v-list-item-avatar(size='100')
+          img(src='https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png' :alt='userData.name')
+        v-list-item-content
+          v-list-item-title.title(style='margin-top:20px;')
+            | {{
+            | userData.name
+            | }}
+          v-list-item-subtitle {{ userData.email }}
+</template>
+<script>
+import { mapActions } from 'vuex'
+
+export default {
+  data() {
+    return {
+      isLoading: true,
+      userData: {}
+    }
+  },
+  mounted() {
+    const id = this.$route.params.user_id
+    if (id) {
+      this.fetchUserData(id)
+    } else {
+      this.$router.push('/')
+    }
+  },
+  methods: {
+    ...mapActions({ getUserById: 'user/getUserById' }),
+    async fetchUserData(id) {
+      try {
+        const response = this.getUserById(id)
+        if (response.status === 200) {
+          this.userData = response.data
+        }
+      } catch (err) {
+        console.log(err)
+      }
+      this.isLoading = false
+    }
+  }
+}
+</script>

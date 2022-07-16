@@ -1,0 +1,16 @@
+// @import '~assets/styles/fonts';
+
+@mixin regular-text() {
+  font-weight: 400;
+}
+
+@mixin medium-text() {
+  font-weight: 500;
+}
+
+@mixin semi-bold-text() {
+  font-weight: 600;
+}
+@mixin extra-bold-text() {
+  font-weight: 800;
+}
