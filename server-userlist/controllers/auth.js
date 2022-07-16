@@ -4,6 +4,7 @@ const User = require("../models/User");
 const keys = require("../config/keys");
 
 module.exports.login = async function (req, res) {
+  console.log("Сервер login");
   try {
     const candidate = await User.findOne({ email: req.body.email });
     if (candidate) {
@@ -42,6 +43,7 @@ module.exports.login = async function (req, res) {
 };
 
 module.exports.register = async function (req, res) {
+  console.log("Сервер register");
   const candidate = await User.findOne({ email: req.body.email });
   if (candidate) {
     res.status(409).json({
