@@ -13,11 +13,15 @@ export const actions = {
     if (token) {
       commit('SET_TOKEN', token)
     }
+  },
+  REMOVE_TOKEN({ commit }) {
+    commit('SET_TOKEN', null)
+    this.$cookies.remove('token')
   }
 }
 
 export const mutations = {
   SET_TOKEN(state, token) {
     state.accessToken = token
-  }
+  },
 }
