@@ -14,6 +14,7 @@ module.exports.getByUserList = async function (req, res) {
         email: element.email,
         _id: element._id,
         admin: element.admin,
+        __v: element.__v,
       };
     });
 
@@ -27,11 +28,12 @@ module.exports.getByUserList = async function (req, res) {
 module.exports.getByUserListId = async function (req, res) {
   try {
     console.log("Сервер getByUserListId");
+    // console.log(req.params);
 
-    // const userList = await User.findOne({ _id: req.body._id });
-    // delete userList.password;
+    // const user = await User.findById(req.params.id);
 
-    res.status(200).json({ userList });
+    // console.log(user);
+    // res.status(200).json({ user });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Сталася помилка. Спробуйте пізніше." });
