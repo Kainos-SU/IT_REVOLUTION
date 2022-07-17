@@ -5,9 +5,25 @@ module.exports.getByUserList = async function (req, res) {
   try {
     console.log("Сервер getByUserList");
 
-    const userList = await User.find();
+    console.log(req.query);
 
-    const newUserList = userList.map((element) => {
+    const limitUser = req.query.limit_user ? req.query.limit_user : 5; // Скільки користувачів на сторінку
+    const page = req.query.page ? req.query.page : 1; // Сторінка яку нада відобразити
+
+    const currentPage = page; // Нинішня сторінка
+
+    const countUser = await User.countDocuments({}).exec(); // Максимальна кількість сторінок
+    const maxPage = Math.ceil(countUser / limitUser); // Округлення сторінок в більшу сторону.
+
+    if (currentPage > maxPage) {
+      return res.status(423).json({ message: "Не корректний запит" });
+    }
+
+    const oldUserList = await User.find()
+      .limit(limitUser)
+      .skip(limitUser * page);
+
+    const userList = oldUserList.map((element) => {
       return {
         name: element.name,
         email: element.email,
@@ -17,7 +33,7 @@ module.exports.getByUserList = async function (req, res) {
       };
     });
 
-    res.status(200).json({ newUserList });
+    res.status(200).json({ userList, currentPage, maxPage });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Сталася помилка. Спробуйте пізніше." });
@@ -27,8 +43,9 @@ module.exports.getByUserList = async function (req, res) {
 module.exports.getByUserId = async function (req, res) {
   try {
     console.log("Сервер getByUserListId");
+
     const candidateUser = await User.findById(req.params.id);
-    console.log(candidateUser);
+
     let user = {
       _id: candidateUser._id,
       email: candidateUser.email,
@@ -39,7 +56,7 @@ module.exports.getByUserId = async function (req, res) {
 
     res.status(200).json({ user });
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     res.status(500).json({ message: "Сталася помилка. Спробуйте пізніше." });
   }
 };

@@ -21,8 +21,10 @@ module.exports.login = async function (req, res) {
           keys.jwt,
           { expiresIn: 60 * 20 }
         );
+        console.log(candidate);
         res.status(200).json({
           token: `Bearer ${token}`,
+          _id: candidate._id,
         });
       } else {
         res.status(401).json({
