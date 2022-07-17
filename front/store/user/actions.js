@@ -6,5 +6,8 @@ export default {
   },
   getUserById({ rootState }, id) {
     return this.$axios.get(`${config.apiPath}/userlist/${id}`)
+  },
+  deleteUser({ rootState }, id) {
+    return this.$axios.delete(`${config.apiPath}/userlist/${id}`)
   }
 }

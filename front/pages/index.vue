@@ -9,17 +9,21 @@
             v-list
               .text-center
                 v-progress-circular(v-if="isLoading" :size="30" color="black" indeterminate)
-              v-list-item(v-for='item in items' :key='item.title' @click="$router.push(`/user/${item.id}`)")
+              v-list-item(v-for='item in items' :key='item.title')
                 v-list-item-icon
-                  v-icon(color='pink')
-                    | mdi-star
-                v-list-item-content
-                  v-list-item-title(v-text='item.email')
-                v-list-item-content
-                  v-list-item-title(v-text='item.name')
-                v-list-item-avatar
-                  v-avatar(color="indigo")
-                    v-icon(dark) mdi-account-circle
+                  v-icon(title="Видалити" @click="deleteUserProfile(item._id)")
+                    | mdi-trash-can-outline
+                v-list-item(@click="$router.push(`/user/${item._id}`)")
+                  v-list-item-icon
+                    v-icon(color='pink')
+                      | mdi-star
+                  v-list-item-content
+                    v-list-item-title(v-text='item.email')
+                  v-list-item-content
+                    v-list-item-title(v-text='item.name')
+                  v-list-item-avatar
+                    v-avatar(color="indigo")
+                      v-icon(dark) mdi-account-circle
 </template>
 
 <script>
@@ -29,85 +33,34 @@ export default {
   data() {
     return {
       isLoading: true,
-      items: [
-        {
-          email: '@sfdj.comer',
-          name: 'test',
-          id: 1
-        },
-        {
-          email: '@sfdj.comoward',
-          name: 'test',
-          id: 1
-        },
-        {
-          email: '@sfdj.comors',
-          name: 'test',
-          id: 1
-        },
-        {
-          email: '@sfdj.comker',
-          name: 'test',
-          id: 1
-        },
-        {
-          email: '@sfdj.comer',
-          name: 'test',
-          id: 1
-        },
-        {
-          email: '@sfdj.comoward',
-          name: 'test',
-          id: 1
-        },
-        {
-          email: '@sfdj.comors',
-          name: 'test',
-          id: 1
-        },
-        {
-          email: '@sfdj.comker',
-          name: 'test',
-          id: 1
-        },
-        {
-          email: '@sfdj.comer',
-          name: 'test',
-          id: 1
-        },
-        {
-          email: '@sfdj.comoward',
-          name: 'test',
-          id: 1
-        },
-        {
-          email: '@sfdj.comors',
-          name: 'test',
-          id: 1
-        },
-        {
-          email: '@sfdj.comker',
-          name: 'test',
-          id: 1
-        }
-      ]
+      items: []
     }
   },
   mounted() {
     this.fetchUsers()
   },
   methods: {
-    ...mapActions({ getUsers: 'user/getUsers' }),
+    ...mapActions({ getUsers: 'user/getUsers', deleteUser: 'user/deleteUser' }),
     async fetchUsers() {
       try {
-        const response = this.getUsers()
+        const response = await this.getUsers()
         if (response.status === 200) {
-          this.items = response.data
+          this.items = response.data.newUserList
         }
       } catch (err) {
         console.log(err)
       }
       this.isLoading = false
+    },
+    async deleteUserProfile(id) {
+      try {
+        const response = await this.deleteUser(id)
+        if (response.status === 200) {
+          this.fetchUsers()
+        }
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }
