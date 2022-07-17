@@ -12,13 +12,13 @@ router.get(
 router.get(
   "/:id",
   pasport.authenticate("jwt", { session: false }),
-  controller.getByUserListId
+  controller.getByUserId
 );
 
 router.delete(
-  "/",
+  "/:id",
   pasport.authenticate("jwt", { session: false }),
-  controller.delete
+  controller.userDelete
 );
 
 module.exports = router;
