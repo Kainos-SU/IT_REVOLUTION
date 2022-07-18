@@ -11,6 +11,6 @@ router.post(
   "/logout",
   pasport.authenticate("jwt", { session: false }),
   controller.logout
-); // Delete in DB refresh token and access
+); // Delete in DB token
 
 module.exports = router;

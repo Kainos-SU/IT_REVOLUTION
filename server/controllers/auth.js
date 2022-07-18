@@ -17,7 +17,6 @@ module.exports.login = async function (req, res) {
         const tokenDB = await new Token({
           _id_user: candidate._id,
         });
-        console.log(tokenDB);
         const token = jwt.sign(
           {
             email: candidate.email,
@@ -27,7 +26,7 @@ module.exports.login = async function (req, res) {
           keys.jwt,
           { expiresIn: "168h" }
         );
-        console.log(token);
+
         await tokenDB.save();
         res.status(200).json({
           token: `Bearer ${token}`,
