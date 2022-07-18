@@ -12,6 +12,21 @@ div
             | userData.name
             | }}
           v-list-item-subtitle {{ userData.email }}
+          
+    <td style="position:absolute; left:-450px;top:0px">
+      v-img(src='https://materials.basov.com.ua/images/ukrainian-ornament-black-red-vector-illustration461x461.jpg?crc=4239809672')
+      v-img(src='https://materials.basov.com.ua/images/ukrainian-ornament-black-red-vector-illustration461x461.jpg?crc=4239809672')
+    </td>
+    <td style="position:absolute; right:-450px;top:0px">
+      v-img(src='https://materials.basov.com.ua/images/ukrainian-ornament-black-red-vector-illustration461x461.jpg?crc=4239809672')
+      v-img(src='https://materials.basov.com.ua/images/ukrainian-ornament-black-red-vector-illustration461x461.jpg?crc=4239809672')
+    </td>
+  //v-list(dense width="200px" class="mx-auto")
+  //  v-list-item-content {{userData.email}}
+  //  v-list-item-content {{userData.name}}
+  //  v-list-item-content {{userData.admin ? "Is Admin" : "No Admin"}}
+
+    
 </template>
 <script>
 import { mapActions } from 'vuex'
@@ -36,8 +51,9 @@ export default {
     async fetchUserData(id) {
       try {
         const response = await this.getUserById(id)
+        console.log(response)
         if (response.status === 200) {
-          this.userData = response.data
+          this.userData = response.data.user
         }
       } catch (err) {
         console.log(err)
