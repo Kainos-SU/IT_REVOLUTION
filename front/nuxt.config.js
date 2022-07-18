@@ -1,6 +1,9 @@
 import colors from 'vuetify/es5/util/colors'
 import config from './config'
 export default {
+  server: {
+    host: '0.0.0.0', // default: localhost,
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s - online_schedule_director',
