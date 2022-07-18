@@ -23,6 +23,7 @@ module.exports.login = async function (req, res) {
         );
         res.status(200).json({
           token: `Bearer ${token}`,
+          id: candidate._id
         });
       } else {
         res.status(401).json({

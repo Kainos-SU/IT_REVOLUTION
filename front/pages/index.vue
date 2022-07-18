@@ -10,8 +10,8 @@
               v-progress-circular(v-if="isLoading" :size="30" color="black" indeterminate)
             v-list-item(v-for='item in items' :key='item._id' @click="$router.push(`/user/${item._id}`)")
               v-list-item-icon
-                v-icon(color='pink')
-                  | mdi-star
+                v-icon(color='pink' v-show="item.admin")
+                  | mdi-crown
               v-list-item-content
                 v-list-item-title(v-text='item.email')
               v-list-item-content
@@ -41,7 +41,6 @@ export default {
     async fetchUsers() {
       try {
         const response = await this.getUsers()
-        console.log(response.data.newUserList);
         if (response.status === 200) {
           this.items = response.data.newUserList
         }

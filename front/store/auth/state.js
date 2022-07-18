@@ -1,5 +1,6 @@
 export default function () {
     return {
-        isAdmin: false
+        isAdmin: false,
+        id: ""
     }
 }
