@@ -1,6 +1,6 @@
 export const state = () => {
   return {
-    accessToken: null,
+    accessToken: null
   }
 }
 

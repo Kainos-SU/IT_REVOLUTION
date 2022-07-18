@@ -8,5 +8,11 @@ export default function({ app, store, redirect }) {
     }
   })
 
-  app.$axios.onError(() => {})
+  app.$axios.onError((err) => {
+    if (err.response.status === 401) {
+      store.commit('SET_TOKEN', null)
+      app.$cookies.set('token', null)
+      redirect('/login')
+    }
+  })
 }

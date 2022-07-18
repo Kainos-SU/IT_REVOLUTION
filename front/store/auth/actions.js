@@ -6,5 +6,8 @@ export default {
   },
   registration({ rootState }, payload) {
     return this.$axios.post(`${config.apiPath}/auth/register`, payload)
+  },
+  logout({ rootState }, payload) {
+    return this.$axios.post(`${config.apiPath}/auth/logout`, payload)
   }
 }

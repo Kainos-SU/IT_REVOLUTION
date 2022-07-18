@@ -18,7 +18,7 @@ v-app
             v-divider(class="my-3")
             v-btn(depressed text ) Account Details 
             v-divider(class="my-3")
-            v-btn(depressed text @click="logout")
+            v-btn(depressed text @click="logoutUser")
               v-icon(class="mr-2") mdi-logout
               | Logout
   v-main
@@ -28,19 +28,35 @@ v-app
 import { mapActions } from 'vuex'
 export default {
   name: 'MainLayout',
-  data () {
+  data() {
     return {
       user: {
-        email: "kapinos@gmail.com",
-        fullName: "Andriy"
+        email: 'kapinos@gmail.com',
+        fullName: 'Andriy'
       }
     }
   },
+  mounted() {
+    console.log(this.$store.state)
+  },
   methods: {
-    ...mapActions({ REMOVE_TOKEN: 'REMOVE_TOKEN' }),
-    logout() {
-      this.REMOVE_TOKEN()
-      this.$router.push("/login");
+    ...mapActions({ logout: 'auth/logout' }),
+    async logoutUser() {
+      try {
+        const params = {
+          _id:
+            this.$store.state.user &&
+            this.$store.state.user.currentUser &&
+            this.$store.state.user.currentUser._id,
+          token: this.$store.state.accessToken
+        }
+        await this.logout(params)
+      } catch (err) {
+        console.log(err)
+      }
+      this.$store.commit('SET_TOKEN', null)
+      this.$cookies.remove('token')
+      this.$router.push('/login')
     }
   }
 }
