@@ -48,7 +48,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions({ login: 'auth/login' }),
+    ...mapActions({ login: 'auth/login', getCurrentUser: "user/getCurrentUser" }),
     async submitForm() {
       this.isLoading = true
       this.isError = false
@@ -56,8 +56,10 @@ export default {
         const response = await this.login(this.payload)
         if (response.status === 200) {
           const token = response.data.token
+          const id = response.data._id
           this.$store.commit('SET_TOKEN', token)
           this.$cookies.set('token', token)
+          await this.getCurrentUser(id)
           this.$router.push('/')
         }
       } catch (err) {
@@ -65,9 +67,6 @@ export default {
         this.isError = true
       }
       this.isLoading = false
-    },
-    changeTheme () {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
     }
   }
 }

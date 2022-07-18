@@ -2,7 +2,6 @@
 v-container(fluid='' fill-height='')
   v-layout(align-center='' justify-center='')
     v-flex(xs12='' sm8='' md4='')
-      span {{total}}
       v-card.mx-auto(max-width='1200')
         v-toolbar(color='indigo' dark='')
           v-toolbar-title Список усіх користувачів

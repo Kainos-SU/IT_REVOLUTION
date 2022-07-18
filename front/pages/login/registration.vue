@@ -54,7 +54,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions({ registration: 'auth/registration', login: 'auth/login' }),
+    ...mapActions({ registration: 'auth/registration', login: 'auth/login', getCurrentUser: 'user/getCurrentUser' }),
     async submitForm() {
       this.isError = false
       this.isLoading = true
@@ -73,12 +73,12 @@ export default {
     },
     async loginUser(data) {
       try {
-        console.log("try login");
         const response = await this.login(data)
         if (response.status === 200) {
           const token = response.data.token
           this.$store.commit('SET_TOKEN', token)
           this.$cookies.set('token', token)
+          this.getCurrentUser(response.data._id)
           this.$router.push('/')
         }
       } catch (err) {

@@ -9,5 +9,10 @@ export default {
   },
   deleteUser({ rootState }, id) {
     return this.$axios.delete(`${config.apiPath}/userlist/${id}`)
+  },
+  async getCurrentUser({ commit }, id) {
+    const response = await this.$axios.get(`${config.apiPath}/userList/${id}`)
+    console.log(response);
+    commit("SET_CURRENT_USER", response.data.user)
   }
 }

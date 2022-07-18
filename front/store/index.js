@@ -1,6 +1,6 @@
 export const state = () => {
   return {
-    accessToken: null
+    accessToken: null,
   }
 }
 
@@ -23,5 +23,5 @@ export const actions = {
 export const mutations = {
   SET_TOKEN(state, token) {
     state.accessToken = token
-  },
+  }
 }
