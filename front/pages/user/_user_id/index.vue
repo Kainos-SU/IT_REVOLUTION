@@ -21,6 +21,7 @@ div
       v-img(src='https://materials.basov.com.ua/images/ukrainian-ornament-black-red-vector-illustration461x461.jpg?crc=4239809672')
       v-img(src='https://materials.basov.com.ua/images/ukrainian-ornament-black-red-vector-illustration461x461.jpg?crc=4239809672')
     </td>
+    
   //v-list(dense width="200px" class="mx-auto")
   //  v-list-item-content {{userData.email}}
   //  v-list-item-content {{userData.name}}
