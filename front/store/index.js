@@ -1,6 +1,6 @@
 export const state = () => {
   return {
-    accessToken: null
+    accessToken: null,
   }
 }
 
@@ -13,6 +13,10 @@ export const actions = {
     if (token) {
       commit('SET_TOKEN', token)
     }
+  },
+  REMOVE_TOKEN({ commit }) {
+    commit('SET_TOKEN', null)
+    this.$cookies.remove('token')
   }
 }
 

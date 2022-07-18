@@ -1,30 +1,26 @@
 <template lang="pug">
-div 
-  v-app
-    v-content
-      v-container(fluid='' fill-height='')
-        v-layout(align-center='' justify-center='')
-          v-flex(xs12='' sm8='' md4='')
-            v-alert(v-model="isError" border="left" close-text="Close Alert" color="deep-purple accent-4" dark dismissible)
-              span Неправильний Email або пароль
-            v-card.elevation-12
-              v-toolbar(dark='' color='primary')
-                v-toolbar-title Login form
-              v-card-text
-                v-form(v-model="valid")
-                  v-text-field(prepend-icon='mdi-emoticon-happy-outline'  :rules="emailRules" v-model="payload.email" label='Email' type='text')
-                  v-text-field(prepend-icon='mdi-download-lock'  v-model="payload.password" :rules="passwordRules" label='Password' type='password')
-              v-card-actions
-                v-btn(color='white' to='/login/registration') Registration
-                v-spacer
-                v-btn(color='primary' :disabled="!valid" @click="submitForm" :loading="isLoading") Login
+v-container(fluid='' fill-height='')
+  v-layout(align-center='' justify-center='')
+    v-flex(xs12='' sm8='' md4='')
+      v-alert(v-model="isError" border="left" close-text="Close Alert" color="deep-purple accent-4" dark dismissible)
+        span Неправильний Email або пароль
+      v-card.elevation-12
+        v-toolbar(dark='' color='primary')
+          v-toolbar-title Login form
+        v-card-text
+          v-form(v-model="valid" @submit="submitForm")
+            v-text-field(prepend-icon='mdi-email'  :rules="emailRules" v-model="payload.email" label='Email' type='text')
+            v-text-field(prepend-icon='mdi-lock'  v-model="payload.password" :rules="passwordRules" label='Password' type='password')
+        v-card-actions
+          v-btn(color='white' to='/login/registration') Registration
+          v-spacer
+          v-btn(color='primary' :disabled="!valid" @click="submitForm" :loading="isLoading") Login
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 export default {
   name: 'Login',
-  layout: 'basic',
   middleware({ route, store, redirect }) {
     if (store.state.accessToken) {
       return redirect('/')
@@ -52,7 +48,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions({ login: 'auth/login' }),
+    ...mapActions({ login: 'auth/login', getCurrentUser: "user/getCurrentUser" }),
     async submitForm() {
       this.isLoading = true
       this.isError = false
@@ -60,8 +56,10 @@ export default {
         const response = await this.login(this.payload)
         if (response.status === 200) {
           const token = response.data.token
+          const id = response.data._id
           this.$store.commit('SET_TOKEN', token)
           this.$cookies.set('token', token)
+          await this.getCurrentUser(id)
           this.$router.push('/')
         }
       } catch (err) {
