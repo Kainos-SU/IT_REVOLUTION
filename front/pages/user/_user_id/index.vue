@@ -35,7 +35,7 @@ export default {
     ...mapActions({ getUserById: 'user/getUserById' }),
     async fetchUserData(id) {
       try {
-        const response = this.getUserById(id)
+        const response = await this.getUserById(id)
         if (response.status === 200) {
           this.userData = response.data
         }

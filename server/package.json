@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "server for todo client",
+  "description": "server",
   "main": "index.js",
   "scripts": {
     "start": "node index",
@@ -11,7 +11,7 @@
   },
   "keywords": [
     "express",
-    "angular"
+    "vue"
   ],
   "author": "Arena",
   "license": "ISC",

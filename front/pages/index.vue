@@ -37,18 +37,28 @@ export default {
     this.fetchUsers()
   },
   methods: {
-    ...mapActions({ getUsers: 'user/getUsers' }),
+    ...mapActions({ getUsers: 'user/getUsers', deleteUser: 'user/deleteUser' }),
     async fetchUsers() {
       try {
         const response = await this.getUsers()
         if (response.status === 200) {
-          this.items = response.data.newUserList
+          this.items = response.data.userList
         }
       } catch (err) {
         console.log(err)
         this.error = true
       }
       this.isLoading = false
+    },
+    async deleteUserProfile(id) {
+      try {
+        const response = await this.deleteUser(id)
+        if (response.status === 200) {
+          this.fetchUsers()
+        }
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }
