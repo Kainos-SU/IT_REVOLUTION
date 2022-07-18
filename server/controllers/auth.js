@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const jwt_decode = require("jwt-decode");
 const User = require("../models/User");
 const Token = require("../models/Token");
 const keys = require("../config/keys");
@@ -81,24 +82,11 @@ module.exports.register = async function (req, res) {
 module.exports.logout = async function (req, res) {
   try {
     console.log("Сервер logout");
-    // console.log(req.body);
     const candidateDelToken = req.body.token;
     const token = await Token.find({ _id_user: req.body._id }); // Списко токенів користувача який хоче вийти з кабінету.
-    // console.log(token);
 
-    // Декодіровка JWT
-    let base64Url = candidateDelToken.split(".")[1];
-    let base64 = decodeURIComponent(
-      atob(base64Url)
-        .split("")
-        .map(function (c) {
-          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-        })
-        .join("")
-    );
-    //
+    const tokenDelete = jwt_decode(candidateDelToken); // Декодіровка jwt токена
 
-    const tokenDelete = JSON.parse(base64);
     const tokenDeleteID = tokenDelete.tokenId; // ID токена сесії користувача який хоче вийти
 
     await Token.findByIdAndRemove({ _id: tokenDeleteID });
