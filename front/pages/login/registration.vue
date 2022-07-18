@@ -1,7 +1,7 @@
 <template lang="pug">
 div 
   v-app
-    v-content
+    v-main
       v-container(fluid='' fill-height='')
         v-layout(align-center='' justify-center='')
           v-flex(xs12='' sm8='' md4='')
@@ -12,9 +12,9 @@ div
                 v-toolbar-title Registration form
               v-card-text
                 v-form(v-model="valid")
-                  v-text-field(prepend-icon='mdi-emoticon-happy-outline' :rules="rules"  v-model="payload.name" label='Name' type='text')
-                  v-text-field(prepend-icon='mdi-emoticon-happy-outline' :rules="emailRules" v-model="payload.email" label='Email' type='text')
-                  v-text-field(prepend-icon='mdi-download-lock' :rules="passwordRules"  v-model="payload.password" label='Password' type='password')
+                  v-text-field(prepend-icon='mdi-account' :rules="rules"  v-model="payload.name" label='Name' type='text')
+                  v-text-field(prepend-icon='mdi-email' :rules="emailRules" v-model="payload.email" label='Email' type='text')
+                  v-text-field(prepend-icon='mdi-lock' :rules="passwordRules"  v-model="payload.password" label='Password' type='password')
               v-card-actions
                 v-btn(color='white' to='/login') Login
                 v-spacer
@@ -25,7 +25,6 @@ div
 import { mapActions } from 'vuex'
 export default {
   name: 'Login',
-  layout: 'basic',
   middleware({ route, store, redirect }) {
     if (store.state.accessToken) {
       return redirect('/')
@@ -55,7 +54,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions({ registration: 'auth/registration', login: 'auth/login' }),
+    ...mapActions({ registration: 'auth/registration', login: 'auth/login', getCurrentUser: 'user/getCurrentUser' }),
     async submitForm() {
       this.isError = false
       this.isLoading = true
@@ -79,6 +78,7 @@ export default {
           const token = response.data.token
           this.$store.commit('SET_TOKEN', token)
           this.$cookies.set('token', token)
+          this.getCurrentUser(response.data._id)
           this.$router.push('/')
         }
       } catch (err) {
