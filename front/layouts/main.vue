@@ -16,7 +16,7 @@ v-app
             h3.mt-5 {{ $store.state.user.currentUser.name }}
             p(class="text-caption mt-1") {{ $store.state.user.currentUser.email }}
             v-divider(class="my-3")
-            v-btn(depressed text ) Account Details 
+            v-btn(depressed text @click='goToAccountDetails') Account Details 
             v-divider(class="my-3")
             v-btn(depressed text @click="logoutUser")
               v-icon(class="mr-2") mdi-logout
@@ -31,13 +31,10 @@ export default {
   data() {
     return {
       user: {
-        email: 'kapinos@gmail.com',
-        fullName: 'Andriy'
+        email: '',
+        fullName: ''
       }
     }
-  },
-  mounted() {
-    console.log(this.$store.state)
   },
   methods: {
     ...mapActions({ logout: 'auth/logout' }),
@@ -57,6 +54,9 @@ export default {
       this.$store.commit('SET_TOKEN', null)
       this.$cookies.remove('token')
       this.$router.push('/login')
+    },
+    goToAccountDetails() {
+      this.$router.push(`/user/${this.$store.state.user.currentUser._id}`)
     }
   }
 }

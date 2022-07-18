@@ -52,7 +52,6 @@ export default {
     async fetchUserData(id) {
       try {
         const response = await this.getUserById(id)
-        console.log(response)
         if (response.status === 200) {
           this.userData = response.data.user
         }
